@@ -9,40 +9,146 @@ body {
 /* ── Hero Section ── */
 .clubs-hero {
     text-align: center;
-    padding: 60px 40px 40px;
-    background: linear-gradient(180deg, var(--white) 0%, var(--off-white) 100%);
-    border-bottom: 1px solid var(--border-soft);
+    padding: 0;
+    background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #F472B6 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dot grid overlay */
+.clubs-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 28px 28px;
+    animation: heroGridDrift 25s linear infinite;
+}
+
+@keyframes heroGridDrift {
+    from { transform: translate(0, 0); }
+    to   { transform: translate(28px, 28px); }
+}
+
+.clubs-hero-inner {
+    position: relative;
+    z-index: 2;
+    padding: 64px 40px 56px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .hero-title {
     font-family: var(--font-display);
     font-size: 2.8rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--white);
     margin-bottom: 12px;
     letter-spacing: -0.02em;
 }
 
 .hero-subtitle {
-    color: var(--text-muted);
+    color: rgba(255,255,255,0.85);
     font-size: 1.05rem;
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+/* Hero stat chips */
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.hero-stat-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255,255,255,0.14);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 14px 28px;
+    border-radius: var(--radius-lg);
+    min-width: 120px;
+    transition: all var(--t-base) var(--ease);
+}
+
+.hero-stat-chip:hover {
+    background: rgba(255,255,255,0.22);
+    transform: translateY(-2px);
+}
+
+.hero-stat-value {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+}
+
+.hero-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.7);
+    margin-top: 4px;
 }
 
 /* ── Clubs Section ── */
 .clubs-section {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 60px 40px 80px;
+    padding: 48px 40px 60px;
+}
+
+.clubs-section-header {
+    margin-bottom: 36px;
+}
+
+.clubs-section-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.clubs-section-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
 }
 
 /* ── Club Cards Grid ── */
 .clubs-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
+    gap: 28px;
+}
+
+/* Loading state */
+.clubs-loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.clubs-loading-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* ── Club Card ── */
@@ -58,7 +164,7 @@ body {
                 border-color var(--t-base) var(--ease);
     position: relative;
     overflow: hidden;
-    animation: cardEnter 0.5s var(--ease-out) forwards;
+    animation: cardEnter 0.5s var(--ease-out) both;
 }
 
 @keyframes cardEnter {
@@ -66,10 +172,10 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.club-card:nth-child(1) { animation-delay: 0.1s; }
-.club-card:nth-child(2) { animation-delay: 0.2s; }
-.club-card:nth-child(3) { animation-delay: 0.3s; }
-.club-card:nth-child(4) { animation-delay: 0.4s; }
+.club-card:nth-child(1) { animation-delay: 0.05s; }
+.club-card:nth-child(2) { animation-delay: 0.1s; }
+.club-card:nth-child(3) { animation-delay: 0.15s; }
+.club-card:nth-child(4) { animation-delay: 0.2s; }
 
 /* Gradient border on hover */
 .club-card::before {
@@ -107,7 +213,7 @@ body {
 .club-card-avatar {
     width: 64px;
     height: 64px;
-    border-radius: 50%;
+    border-radius: var(--radius-md);
     background: linear-gradient(135deg, var(--blue), var(--pink));
     display: flex;
     align-items: center;
@@ -118,7 +224,7 @@ body {
 }
 
 .club-card-header {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .club-card-name {
@@ -127,6 +233,13 @@ body {
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 8px;
+}
+
+.club-card-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 16px;
 }
 
 .club-card-meta {
@@ -163,7 +276,36 @@ body {
     height: 100%;
     background: linear-gradient(90deg, var(--blue), var(--pink));
     border-radius: var(--radius-full);
-    transition: width 0.3s var(--ease);
+    transition: width 0.6s var(--ease);
+}
+
+/* View arrow hint */
+.club-card-arrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all var(--t-base) var(--ease);
+}
+
+.club-card:hover .club-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ── Footer ── */
+.clubs-footer {
+    text-align: center;
+    padding: 32px 20px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-muted);
+    font-size: 13px;
+    background: var(--white);
 }
 
 /* ── Responsive ── */
@@ -179,11 +321,21 @@ body {
     .clubs-section {
         padding: 40px 24px 60px;
     }
+
+    .hero-stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hero-stat-chip {
+        min-width: 180px;
+    }
 }
 
 @media (max-width: 600px) {
-    .clubs-hero {
-        padding: 40px 20px 30px;
+    .clubs-hero-inner {
+        padding: 40px 20px 36px;
     }
 
     .hero-title {

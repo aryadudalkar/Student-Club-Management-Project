@@ -27,13 +27,15 @@
 
     <!-- Hero Section -->
     <section class="club-hero" id="clubHero">
+        <div class="club-hero-overlay"></div>
         <div class="club-hero-content">
             <div class="club-hero-avatar" id="clubEmoji">🚀</div>
             <div class="club-hero-text">
                 <h1 id="clubName">Loading...</h1>
+                <p class="club-hero-description" id="clubDescription"></p>
                 <div class="club-hero-stats">
-                    <span class="stat-chip" id="memberStat">0 members</span>
-                    <span class="stat-chip" id="eventStat">0 events</span>
+                    <div class="stat-chip"><span class="stat-chip-icon">👥</span> <span id="memberStat">0 members</span></div>
+                    <div class="stat-chip"><span class="stat-chip-icon">📅</span> <span id="eventStat">0 events</span></div>
                 </div>
             </div>
         </div>
@@ -41,15 +43,36 @@
 
     <!-- Tab Navigation -->
     <div class="tab-navigation">
-        <button class="tab-btn active" data-tab="members" id="tab-members">👥 Members</button>
-        <button class="tab-btn" data-tab="events" id="tab-events">📅 Events</button>
+        <div class="tab-navigation-inner">
+            <button class="tab-btn active" data-tab="members" id="tab-members">
+                <span class="tab-btn-icon">👥</span> Members
+            </button>
+            <button class="tab-btn" data-tab="events" id="tab-events">
+                <span class="tab-btn-icon">📅</span> Events
+            </button>
+        </div>
     </div>
 
     <!-- Tab Content -->
     <div class="tab-content">
-        <div class="tab-panel active" id="pane-members"></div>
-        <div class="tab-panel" id="pane-events"></div>
+        <div class="tab-panel active" id="pane-members">
+            <div class="tab-panel-loading">
+                <div class="clubs-loading-spinner"></div>
+                <p>Loading members...</p>
+            </div>
+        </div>
+        <div class="tab-panel" id="pane-events">
+            <div class="tab-panel-loading">
+                <div class="clubs-loading-spinner"></div>
+                <p>Loading events...</p>
+            </div>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="clubs-footer">
+        <p>© 2026 ClubConnect — Student Club Management System</p>
+    </footer>
 
     <script>
         const CLUB_NAME = "{{ club_name }}";

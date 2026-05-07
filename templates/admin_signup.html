@@ -13,47 +13,70 @@
     <div id="toast-container"></div>
 
     <div class="gate-wrapper">
-        <div class="gate-card gate-card-wide">
-            <div class="gate-icon">🛡️</div>
-            <h1 class="gate-title">Admin Sign Up</h1>
-            <p class="gate-subtitle">Create an admin account to manage your club</p>
+        <!-- Decorative left panel -->
+        <div class="gate-branding">
+            <div class="gate-branding-content">
+                <div class="gate-branding-icon">🚀</div>
+                <h2 class="gate-branding-title">Join as Admin</h2>
+                <p class="gate-branding-text">Take the lead. Manage your club's growth, events, and community from a single dashboard.</p>
+                <div class="gate-branding-features">
+                    <div class="gate-feature"><span>✅</span> Full CRUD Access</div>
+                    <div class="gate-feature"><span>📋</span> Member Management</div>
+                    <div class="gate-feature"><span>🔑</span> Secure Key Auth</div>
+                </div>
+            </div>
+            <div class="gate-branding-shapes">
+                <div class="gate-shape gate-shape-1"></div>
+                <div class="gate-shape gate-shape-2"></div>
+            </div>
+        </div>
 
-            <form id="adminSignupForm">
-                <div class="form-group">
-                    <label for="adminName">Your Name</label>
-                    <input type="text" id="adminName" placeholder="e.g. Dr. Sharma" required>
+        <!-- Right: Signup Form -->
+        <div class="gate-form-panel">
+            <div class="gate-card">
+                <div class="gate-icon">🛡️</div>
+                <h1 class="gate-title">Admin Sign Up</h1>
+                <p class="gate-subtitle">Create an admin account to manage your club</p>
+
+                <form id="adminSignupForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adminName">Your Name</label>
+                            <input type="text" id="adminName" placeholder="e.g. Dr. Sharma" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminEmail">Email Address</label>
+                            <input type="email" id="adminEmail" placeholder="admin@college.edu" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="clubSelect">Club</label>
+                        <select id="clubSelect" required>
+                            <option value="">Select a club...</option>
+                            <option value="Genesis">🚀 Genesis</option>
+                            <option value="Numerano">🔢 Numerano</option>
+                            <option value="ByteSync">💻 ByteSync</option>
+                            <option value="AWS Cloud Club">☁️ AWS Cloud Club</option>
+                        </select>
+                    </div>
+                    <div class="form-group input-group">
+                        <input type="password" id="adminSecretKey" placeholder=" " required>
+                        <label for="adminSecretKey">Club Secret Key</label>
+                        <button type="button" class="eye-toggle" id="toggleSecretKeyEye" aria-label="Toggle secret key visibility">👁️</button>
+                        <div class="input-hint">Contact your club coordinator for the secret key</div>
+                    </div>
+                    <div id="secretKeyError" class="input-error-msg" style="display: none;"></div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="btn-admin-signup">Create Admin Account</button>
+                </form>
+                <div class="gate-footer-links">
+                    <p>Already have an account? <a href="/admin/login" id="link-admin-login">Login here</a></p>
+                    <a href="/" class="back-link" id="link-back-home">← Back to Home</a>
                 </div>
-                <div class="form-group">
-                    <label for="adminEmail">Email Address</label>
-                    <input type="email" id="adminEmail" placeholder="admin@college.edu" required>
-                </div>
-                <div class="form-group">
-                    <label for="clubSelect">Club</label>
-                    <select id="clubSelect" required>
-                        <option value="">Select a club...</option>
-                        <option value="Genesis">🚀 Genesis</option>
-                        <option value="Numerano">🔢 Numerano</option>
-                        <option value="ByteSync">💻 ByteSync</option>
-                        <option value="AWS Cloud Club">☁️ AWS Cloud Club</option>
-                    </select>
-                </div>
-                <div class="form-group input-group">
-                    <input type="password" id="adminSecretKey" placeholder=" " required>
-                    <label for="adminSecretKey">Club Secret Key</label>
-                    <button type="button" class="eye-toggle" id="toggleSecretKeyEye" aria-label="Toggle secret key visibility">👁️</button>
-                    <div class="input-hint">Contact your club coordinator for the secret key</div>
-                </div>
-                <div id="secretKeyError" class="input-error-msg" style="display: none;"></div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" placeholder="Create a password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" id="btn-admin-signup">Create Admin Account</button>
-            </form>
-            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted, #888);">
-                Already have an account? <a href="/admin/login" style="color: var(--accent, #6c63ff);">Login here</a>
-            </p>
-            <a href="/" class="back-link" id="link-back-home">← Back to Home</a>
+            </div>
         </div>
     </div>
 

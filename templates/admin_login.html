@@ -13,42 +13,63 @@
     <div id="toast-container"></div>
 
     <div class="gate-wrapper">
-        <div class="gate-card">
-            <div class="gate-icon">🔐</div>
-            <h1 class="gate-title">Admin Login</h1>
-            <p class="gate-subtitle">Sign in to manage your club</p>
-            <form id="adminLoginForm">
-                <div class="form-group">
-                    <label for="adminEmail">Email Address</label>
-                    <input type="email" id="adminEmail" placeholder="admin@college.edu" required>
+        <!-- Decorative left panel -->
+        <div class="gate-branding">
+            <div class="gate-branding-content">
+                <div class="gate-branding-icon">🛡️</div>
+                <h2 class="gate-branding-title">ClubConnect Admin</h2>
+                <p class="gate-branding-text">Manage your club members, events, and more from one powerful dashboard.</p>
+                <div class="gate-branding-features">
+                    <div class="gate-feature"><span>👥</span> Manage Members</div>
+                    <div class="gate-feature"><span>📅</span> Schedule Events</div>
+                    <div class="gate-feature"><span>📊</span> Track Stats</div>
                 </div>
-                <div class="form-group">
-                    <label for="clubSelect">Club</label>
-                    <select id="clubSelect" required>
-                        <option value="">Select a club...</option>
-                        <option value="Genesis">🚀 Genesis</option>
-                        <option value="Numerano">🔢 Numerano</option>
-                        <option value="ByteSync">💻 ByteSync</option>
-                        <option value="AWS Cloud Club">☁️ AWS Cloud Club</option>
-                    </select>
+            </div>
+            <div class="gate-branding-shapes">
+                <div class="gate-shape gate-shape-1"></div>
+                <div class="gate-shape gate-shape-2"></div>
+            </div>
+        </div>
+
+        <!-- Right: Login Form -->
+        <div class="gate-form-panel">
+            <div class="gate-card">
+                <div class="gate-icon">🔐</div>
+                <h1 class="gate-title">Admin Login</h1>
+                <p class="gate-subtitle">Sign in to manage your club</p>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Email Address</label>
+                        <input type="email" id="adminEmail" placeholder="admin@college.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clubSelect">Club</label>
+                        <select id="clubSelect" required>
+                            <option value="">Select a club...</option>
+                            <option value="Genesis">🚀 Genesis</option>
+                            <option value="Numerano">🔢 Numerano</option>
+                            <option value="ByteSync">💻 ByteSync</option>
+                            <option value="AWS Cloud Club">☁️ AWS Cloud Club</option>
+                        </select>
+                    </div>
+                    <div class="form-group input-group">
+                        <input type="password" id="adminSecretKey" placeholder=" " required>
+                        <label for="adminSecretKey">Club Secret Key</label>
+                        <button type="button" class="eye-toggle" id="toggleSecretKeyEye" aria-label="Toggle secret key visibility">👁️</button>
+                        <div class="input-hint">Contact your club coordinator for the secret key</div>
+                    </div>
+                    <div id="secretKeyError" class="input-error-msg" style="display: none;"></div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="btn-admin-login">Sign In</button>
+                </form>
+                <div class="gate-footer-links">
+                    <p>Don't have an account? <a href="/admin/signup" id="link-admin-signup">Sign up here</a></p>
+                    <a href="/" class="back-link" id="link-back-home">← Back to Home</a>
                 </div>
-                <div class="form-group input-group">
-                    <input type="password" id="adminSecretKey" placeholder=" " required>
-                    <label for="adminSecretKey">Club Secret Key</label>
-                    <button type="button" class="eye-toggle" id="toggleSecretKeyEye" aria-label="Toggle secret key visibility">👁️</button>
-                    <div class="input-hint">Contact your club coordinator for the secret key</div>
-                </div>
-                <div id="secretKeyError" class="input-error-msg" style="display: none;"></div>
-                <div class="form-group">
-                    <label for="adminPassword">Password</label>
-                    <input type="password" id="adminPassword" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" id="btn-admin-login">Sign In</button>
-            </form>
-            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted, #888);">
-                Don't have an account? <a href="/admin/signup" style="color: var(--accent, #6c63ff);">Sign up here</a>
-            </p>
-            <a href="/" class="back-link" id="link-back-home">← Back to Home</a>
+            </div>
         </div>
     </div>
 

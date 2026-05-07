@@ -76,10 +76,18 @@ async function loadClubs() {
             return; 
         }
 
+        // Update hero stats
+        const totalClubs = data.clubs.length;
+        const totalMembers = data.clubs.reduce((sum, c) => sum + (c.member_count || 0), 0);
+        
+        const heroClubsEl = document.querySelector('#heroTotalClubs .hero-stat-value');
+        const heroMembersEl = document.querySelector('#heroTotalMembers .hero-stat-value');
+        if (heroClubsEl) heroClubsEl.textContent = totalClubs;
+        if (heroMembersEl) heroMembersEl.textContent = totalMembers;
+
         grid.innerHTML = '';
         data.clubs.forEach((club, index) => {
             const desc = CLUB_DESCRIPTIONS[club.club_name] || '';
-            const totalMembers = data.clubs.reduce((sum, c) => sum + (c.member_count || 0), 0);
             const memberPercentage = totalMembers > 0 ? (club.member_count / totalMembers) * 100 : 25;
             
             const card = document.createElement('div');
@@ -89,6 +97,7 @@ async function loadClubs() {
                 <div class="club-card-avatar">${club.emoji}</div>
                 <div class="club-card-header">
                     <h2 class="club-card-name">${club.club_name}</h2>
+                    ${desc ? `<p class="club-card-desc">${desc}</p>` : ''}
                     <div class="club-card-meta">
                         <span class="club-card-members">${club.member_count} members</span>
                     </div>
@@ -96,6 +105,7 @@ async function loadClubs() {
                 <div class="club-card-progress">
                     <div class="club-card-progress-bar" style="width: ${memberPercentage}%"></div>
                 </div>
+                <div class="club-card-arrow">View Club →</div>
             `;
             
             card.addEventListener('click', () => {
@@ -105,6 +115,7 @@ async function loadClubs() {
             grid.appendChild(card);
         });
     } catch(err) {
+        grid.innerHTML = '<div class="empty-state"><span class="empty-state-icon">😕</span><p>Failed to load clubs. Please try again.</p></div>';
         showToast('Failed to load clubs.', 'error');
     }
 }

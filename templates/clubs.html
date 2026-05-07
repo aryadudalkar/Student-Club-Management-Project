@@ -27,16 +27,41 @@
 
     <!-- Hero -->
     <section class="clubs-hero">
-        <h1 class="hero-title">Discover Your Clubs</h1>
-        <p class="hero-subtitle">Explore, join, and engage with the vibrant club community at your college</p>
+        <div class="clubs-hero-inner">
+            <h1 class="hero-title">Discover Your Clubs</h1>
+            <p class="hero-subtitle">Explore, join, and engage with the vibrant club community at your college</p>
+            <div class="hero-stats">
+                <div class="hero-stat-chip" id="heroTotalClubs">
+                    <span class="hero-stat-value">—</span>
+                    <span class="hero-stat-label">Active Clubs</span>
+                </div>
+                <div class="hero-stat-chip" id="heroTotalMembers">
+                    <span class="hero-stat-value">—</span>
+                    <span class="hero-stat-label">Total Members</span>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Clubs Grid -->
     <section class="clubs-section">
+        <div class="clubs-section-header">
+            <h2 class="clubs-section-title">All Clubs</h2>
+            <p class="clubs-section-subtitle">Click on a club to view details, members, and upcoming events</p>
+        </div>
         <div class="clubs-grid" id="clubsGrid">
             <!-- Cards rendered by JS -->
+            <div class="clubs-loading">
+                <div class="clubs-loading-spinner"></div>
+                <p>Loading clubs...</p>
+            </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="clubs-footer">
+        <p>© 2026 ClubConnect — Student Club Management System</p>
+    </footer>
 
     <script src="/static/js/clubs.js"></script>
 </body>
