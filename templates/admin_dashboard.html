@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — ClubConnect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body class="page-enter">
+    <div id="toast-container"></div>
+    <div id="progress-bar"></div>
+
+    <!-- Admin Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="nav-icon">🛡️</span>
+            <span class="nav-title" id="dashClubName">Admin Dashboard</span>
+        </div>
+        <div class="nav-user">
+            <span class="user-greeting" id="adminGreeting">Admin</span>
+            <a href="/logout" class="btn btn-outline btn-sm" id="btn-logout">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Admin Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-club-name" id="sidebarClubName">Club</div>
+            </div>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <button class="admin-nav-link active" data-panel="members">👥 Members</button>
+                </li>
+                <li class="admin-nav-item">
+                    <button class="admin-nav-link" data-panel="events">📅 Events</button>
+                </li>
+                <li class="admin-nav-item">
+                    <button class="admin-nav-link" data-panel="admins">🛡️ Admins</button>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Stat Cards -->
+            <div class="stat-cards-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total Members</div>
+                    <div class="stat-value" id="statMembers">0</div>
+                    <div class="stat-sparkline"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Upcoming Events</div>
+                    <div class="stat-value" id="statEvents">0</div>
+                    <div class="stat-sparkline"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Admins</div>
+                    <div class="stat-value" id="statAdmins">0</div>
+                    <div class="stat-sparkline"></div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="admin-tabs" id="adminTabs">
+                <button class="admin-tab active" data-panel="members">👥 Members</button>
+                <button class="admin-tab" data-panel="events">📅 Events</button>
+                <button class="admin-tab" data-panel="admins">🛡️ Admins</button>
+            </div>
+
+            <!-- Members Panel -->
+            <div class="admin-panel active" id="panel-members">
+                <div class="panel-header">
+                    <h2>Club Members</h2>
+                </div>
+                <div class="panel-form">
+                    <h3>Add New Member</h3>
+                    <form id="addMemberForm" class="inline-form">
+                        <input type="text" id="memberName" placeholder="Full Name" required>
+                        <input type="email" id="memberEmail" placeholder="Email" required>
+                        <input type="tel" id="memberPhone" placeholder="Phone" maxlength="15">
+                        <select id="memberTeamType" required>
+                            <option value="">Team Type...</option>
+                            <option value="Design">Design</option>
+                            <option value="Technical">Technical</option>
+                            <option value="Documentation">Documentation</option>
+                            <option value="Media">Media</option>
+                            <option value="Sponsorship & PR">Sponsorship & PR</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm" id="btn-add-member">Add</button>
+                    </form>
+                </div>
+                <div class="panel-list" id="membersList">
+                    <p style="padding: 20px; text-align: center; color: var(--text-muted);">Loading members...</p>
+                </div>
+            </div>
+
+            <!-- Events Panel -->
+            <div class="admin-panel" id="panel-events">
+                <div class="panel-header">
+                    <h2>Events</h2>
+                </div>
+                <div class="panel-form">
+                    <h3>Add New Event</h3>
+                    <form id="addEventForm" class="inline-form">
+                        <input type="text" id="eventName" placeholder="Event Name" required>
+                        <input type="date" id="eventDate" required>
+                        <select id="eventType" required>
+                            <option value="">Event Type...</option>
+                            <option value="Technical">Technical</option>
+                            <option value="Cultural">Cultural</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm" id="btn-add-event">Add</button>
+                    </form>
+                </div>
+                <div class="panel-list" id="eventsList">
+                    <p style="padding: 20px; text-align: center; color: var(--text-muted);">Loading events...</p>
+                </div>
+            </div>
+
+            <!-- Admins Panel -->
+            <div class="admin-panel" id="panel-admins">
+                <div class="panel-header">
+                    <h2>Admin List</h2>
+                </div>
+                <div class="panel-list" id="adminsList">
+                    <p style="padding: 20px; text-align: center; color: var(--text-muted);">Loading admins...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const CLUB_NAME = "{{ club_name }}";
+    </script>
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

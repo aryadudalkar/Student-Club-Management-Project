@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Student Club Management System - Your College. Your Clubs. Your Community.">
+    <title>ClubConnect — Student Club Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+</head>
+<body class="auth-page">
+    <!-- Toast container -->
+    <div id="toast-container"></div>
+
+    <div class="auth-wrapper">
+        <!-- Left: Branding -->
+        <div class="auth-branding">
+            <div class="branding-content">
+                <div class="brand-icon">🎓</div>
+                <h1 class="brand-title">ClubConnect</h1>
+                <p class="brand-tagline">Your College. Your Clubs. Your Community.</p>
+                <div class="brand-features">
+                    <div class="feature-item"><span class="feature-icon">🚀</span><span>Join exciting clubs</span></div>
+                    <div class="feature-item"><span class="feature-icon">📅</span><span>Discover events</span></div>
+                    <div class="feature-item"><span class="feature-icon">🏆</span><span>Track achievements</span></div>
+                    <div class="feature-item"><span class="feature-icon">👥</span><span>Connect with peers</span></div>
+                </div>
+            </div>
+            <div class="branding-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
+
+        <!-- Right: Auth Forms -->
+        <div class="auth-panel">
+            <!-- Role Toggle -->
+            <div class="role-toggle" id="roleToggle">
+                <button class="role-btn active" data-role="user" id="btn-role-user">Login as User</button>
+                <button class="role-btn" data-role="admin" id="btn-role-admin">Login as Admin</button>
+                <div class="role-slider"></div>
+            </div>
+
+            <!-- User Login Form -->
+            <div class="auth-form-container active" id="userAuthContainer">
+                <div class="form-toggle" id="formToggle">
+                    <button class="toggle-btn active" data-form="login" id="btn-toggle-login">Login</button>
+                    <button class="toggle-btn" data-form="signup" id="btn-toggle-signup">Sign Up</button>
+                </div>
+
+                <!-- Login -->
+                <form class="auth-form active" id="loginForm">
+                    <h2 class="form-title">Welcome Back</h2>
+                    <p class="form-subtitle">Sign in to explore your clubs</p>
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" placeholder="you@college.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="btn-login-submit">Sign In</button>
+                </form>
+
+                <!-- Signup -->
+                <form class="auth-form" id="signupForm">
+                    <h2 class="form-title">Create Account</h2>
+                    <p class="form-subtitle">Join your college club community</p>
+                    <div class="form-group">
+                        <label for="signup-name">Username</label>
+                        <input type="text" id="signup-name" placeholder="Your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" placeholder="you@college.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-phone">Phone Number</label>
+                        <input type="tel" id="signup-phone" placeholder="9876543210" maxlength="15">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="btn-signup-submit">Create Account</button>
+                </form>
+            </div>
+
+            <!-- Admin redirect message -->
+            <div class="auth-form-container" id="adminAuthContainer">
+                <div class="admin-redirect-card">
+                    <div class="admin-icon">🔐</div>
+                    <h2 class="form-title">Admin Access</h2>
+                    <p class="form-subtitle">Access the admin dashboard to manage your club</p>
+                    <a href="/admin/login" class="btn btn-primary" id="btn-admin-login" style="margin-bottom: 0.75rem; display: block; text-align: center;">Admin Login</a>
+                    <a href="/admin/signup" class="btn btn-outline" id="btn-admin-signup" style="display: block; text-align: center;">Create Admin Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+/* ═══════════════════════════════════════════════════════════
+   AUTH.CSS — Premium Two-Column Auth Page
+   ═══════════════════════════════════════════════════════════ */
+
+.auth-page {
+    min-height: 100vh;
+    background: var(--off-white);
+    overflow: hidden;
+}
+
+.auth-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── Left Panel: Branding ── */
+.auth-branding {
+    width: 40%;
+    min-height: 100vh;
+    background: linear-gradient(145deg, #1E40AF 0%, #3B82F6 50%, #F472B6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated dot grid background */
+.auth-branding::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+    animation: gridDrift 25s linear infinite;
+}
+
+@keyframes gridDrift {
+    from { transform: translate(0, 0); }
+    to   { transform: translate(28px, 28px); }
+}
+
+.branding-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: var(--white);
+    padding: 40px;
+}
+
+.brand-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+.brand-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.brand-tagline {
+    font-size: 1.05rem;
+    font-weight: 300;
+    opacity: 0.9;
+    margin-bottom: 40px;
+}
+
+/* Floating feature chips */
+.brand-features {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.feature-item {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 12px 20px;
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: featureFloat 5s ease-in-out infinite;
+}
+
+.feature-item:nth-child(2) { animation-delay: 0.6s; }
+.feature-item:nth-child(3) { animation-delay: 1.2s; }
+.feature-item:nth-child(4) { animation-delay: 1.8s; }
+
+@keyframes featureFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+}
+
+.feature-icon {
+    font-size: 16px;
+}
+
+/* ── Right Panel: Forms ── */
+.auth-panel {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 60px;
+    background: var(--white);
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+/* ── Role Toggle (Pill Switcher) ── */
+.role-toggle {
+    display: flex;
+    background: var(--off-white);
+    border-radius: var(--radius-full);
+    padding: 4px;
+    margin-bottom: 32px;
+    position: relative;
+    border: 1px solid var(--border-soft);
+}
+
+.role-btn {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-muted);
+    transition: all var(--t-base) var(--ease);
+    position: relative;
+    z-index: 2;
+}
+
+.role-btn.active {
+    color: var(--blue);
+}
+
+.role-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: var(--white);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--t-base) var(--ease-spring);
+}
+
+.role-toggle.admin-mode .role-slider {
+    transform: translateX(100%);
+}
+
+/* ── Form Toggle Links ── */
+.form-toggle {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 8px 0;
+    border-bottom: 2px solid transparent;
+    transition: all var(--t-base) var(--ease);
+}
+
+.toggle-btn.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+}
+
+/* ── Form Container ── */
+.auth-form-container {
+    width: 100%;
+    max-width: 420px;
+    display: none;
+    animation: containerFade 0.3s var(--ease-out) forwards;
+}
+
+.auth-form-container.active {
+    display: block;
+}
+
+@keyframes containerFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Form Title & Subtitle ── */
+.form-title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.form-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+/* ── Auth Form ── */
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+    animation: formFade 0.3s var(--ease-out) forwards;
+}
+
+@keyframes formFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Form Group ── */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-family: var(--font-body);
+    background: var(--off-white);
+    transition: border-color var(--t-base) var(--ease),
+                box-shadow var(--t-base) var(--ease),
+                background var(--t-base) var(--ease);
+    outline: none;
+    color: var(--text-primary);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.10);
+    background: var(--white);
+}
+
+/* ── Input Group with Eye Toggle ── */
+.input-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 44px 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-family: var(--font-body);
+    background: var(--off-white);
+    transition: all var(--t-base) var(--ease);
+    outline: none;
+    color: var(--text-primary);
+}
+
+.input-group input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.10);
+    background: var(--white);
+}
+
+.input-group .eye-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-muted);
+    padding: 4px;
+    transition: color var(--t-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-group .eye-toggle:hover {
+    color: var(--text-secondary);
+}
+
+/* Input hint text */
+.input-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    padding-left: 0;
+}
+
+/* Input error message */
+.input-error-msg {
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: 6px;
+    padding-left: 0;
+    font-weight: 500;
+}
+
+/* ── Input Error Animation ── */
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%     { transform: translateX(-8px); }
+    40%     { transform: translateX(8px); }
+    60%     { transform: translateX(-5px); }
+    80%     { transform: translateX(5px); }
+}
+
+.input-error {
+    animation: shake 0.4s var(--ease) forwards !important;
+}
+
+.input-error input {
+    border-color: var(--danger) !important;
+}
+
+/* ── Admin Redirect Card ── */
+.admin-redirect-card {
+    text-align: center;
+    padding: 28px;
+    background: var(--off-white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-soft);
+}
+
+.admin-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.admin-redirect-card .form-title {
+    margin-bottom: 8px;
+}
+
+.admin-redirect-card .form-subtitle {
+    margin-bottom: 24px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .auth-wrapper {
+        flex-direction: column;
+    }
+
+    .auth-branding {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px;
+    }
+
+    .auth-panel {
+        width: 100%;
+        padding: 32px 24px;
+    }
+
+    .brand-title {
+        font-size: 1.8rem;
+    }
+
+    .brand-tagline {
+        font-size: 0.95rem;
+        margin-bottom: 24px;
+    }
+
+    .brand-features {
+        gap: 8px;
+    }
+
+    .feature-item {
+        font-size: 13px;
+        padding: 10px 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    .auth-panel {
+        padding: 24px 16px;
+    }
+
+    .role-toggle,
+    .form-toggle {
+        width: 100%;
+    }
+
+    .form-title {
+        font-size: 1.4rem;
+    }
+}

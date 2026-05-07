@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubs Directory — ClubConnect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/clubs.css">
+</head>
+<body class="page-enter">
+    <div id="toast-container"></div>
+    <div id="progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <span class="nav-icon">🎓</span>
+            <span class="nav-title">ClubConnect</span>
+        </div>
+        <div class="nav-user">
+            <span class="user-greeting" id="userGreeting">Hello, Student</span>
+            <a href="/logout" class="btn btn-outline btn-sm" id="btn-logout">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="clubs-hero">
+        <h1 class="hero-title">Discover Your Clubs</h1>
+        <p class="hero-subtitle">Explore, join, and engage with the vibrant club community at your college</p>
+    </section>
+
+    <!-- Clubs Grid -->
+    <section class="clubs-section">
+        <div class="clubs-grid" id="clubsGrid">
+            <!-- Cards rendered by JS -->
+        </div>
+    </section>
+
+    <script src="/static/js/clubs.js"></script>
+</body>
+</html>

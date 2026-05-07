@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login — ClubConnect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body class="admin-gate-page">
+    <div id="toast-container"></div>
+
+    <div class="gate-wrapper">
+        <div class="gate-card">
+            <div class="gate-icon">🔐</div>
+            <h1 class="gate-title">Admin Login</h1>
+            <p class="gate-subtitle">Sign in to manage your club</p>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminEmail">Email Address</label>
+                    <input type="email" id="adminEmail" placeholder="admin@college.edu" required>
+                </div>
+                <div class="form-group">
+                    <label for="clubSelect">Club</label>
+                    <select id="clubSelect" required>
+                        <option value="">Select a club...</option>
+                        <option value="Genesis">🚀 Genesis</option>
+                        <option value="Numerano">🔢 Numerano</option>
+                        <option value="ByteSync">💻 ByteSync</option>
+                        <option value="AWS Cloud Club">☁️ AWS Cloud Club</option>
+                    </select>
+                </div>
+                <div class="form-group input-group">
+                    <input type="password" id="adminSecretKey" placeholder=" " required>
+                    <label for="adminSecretKey">Club Secret Key</label>
+                    <button type="button" class="eye-toggle" id="toggleSecretKeyEye" aria-label="Toggle secret key visibility">👁️</button>
+                    <div class="input-hint">Contact your club coordinator for the secret key</div>
+                </div>
+                <div id="secretKeyError" class="input-error-msg" style="display: none;"></div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btn-admin-login">Sign In</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted, #888);">
+                Don't have an account? <a href="/admin/signup" style="color: var(--accent, #6c63ff);">Sign up here</a>
+            </p>
+            <a href="/" class="back-link" id="link-back-home">← Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Secret key eye toggle
+        const secretKeyInput = document.getElementById('adminSecretKey');
+        const toggleEye = document.getElementById('toggleSecretKeyEye');
+        
+        toggleEye.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isPassword = secretKeyInput.type === 'password';
+            secretKeyInput.type = isPassword ? 'text' : 'password';
+            toggleEye.textContent = isPassword ? '🙈' : '👁️';
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value.trim();
+            const secret_key = document.getElementById('adminSecretKey').value.trim();
+            const club_name = document.getElementById('clubSelect').value;
+            const password = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('secretKeyError');
+
+            if (!club_name) {
+                showToast('Please select a club.', 'error');
+                return;
+            }
+
+            if (!secret_key) {
+                showToast('Please enter the club secret key.', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, club_name, secret_key })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    errorDiv.style.display = 'none';
+                    showToast('Login successful! Redirecting...', 'success');
+                    setTimeout(() => { window.location.href = '/admin/dashboard'; }, 500);
+                } else {
+                    if (data.message.includes('Invalid secret key')) {
+                        errorDiv.textContent = data.message;
+                        errorDiv.style.display = 'block';
+                        const formGroup = document.querySelector('.input-group');
+                        if (formGroup) {
+                            formGroup.classList.add('input-error');
+                            setTimeout(() => formGroup.classList.remove('input-error'), 500);
+                        }
+                    } else {
+                        errorDiv.style.display = 'none';
+                        showToast(data.message, 'error');
+                    }
+                }
+            } catch (err) {
+                errorDiv.style.display = 'none';
+                showToast('Connection error.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
