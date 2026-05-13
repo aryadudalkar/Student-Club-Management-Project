@@ -13,65 +13,135 @@
     <div id="toast-container"></div>
     <div id="progress-bar"></div>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-brand">
-            <a href="/user/clubs" class="nav-back" id="nav-back">← Back</a>
-            <span class="nav-icon">🎓</span>
-            <span class="nav-title">ClubConnect</span>
-        </div>
-        <div class="nav-user">
-            <a href="/logout" class="btn btn-outline btn-sm" id="btn-logout">Logout</a>
+    <!-- Sticky Header Navigation -->
+    <nav class="club-navbar" id="clubNavbar">
+        <div class="club-navbar-inner">
+            <div class="club-navbar-left">
+                <a href="/user/clubs" class="nav-back" id="nav-back">← Back</a>
+                <div class="club-navbar-logo" id="navbarLogo"></div>
+                <span class="club-navbar-name" id="navbarName"></span>
+            </div>
+            <div class="club-navbar-links">
+                <a href="#about" class="club-nav-link active" data-section="about">About Us</a>
+                <a href="#events" class="club-nav-link" data-section="events">Events</a>
+                <a href="#achievements" class="club-nav-link" data-section="achievements">Achievements</a>
+                <a href="#members" class="club-nav-link" data-section="members">Members</a>
+                <a href="#faculty" class="club-nav-link" data-section="faculty">Faculty</a>
+                <a href="#contact" class="club-nav-link" data-section="contact">Contact Us</a>
+            </div>
+            <div class="club-navbar-right">
+                <a href="/logout" class="btn btn-outline btn-sm" id="btn-logout">Logout</a>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="club-hero" id="clubHero">
-        <div class="club-hero-overlay"></div>
+    <section class="club-hero" id="hero">
+        <div class="club-hero-bg"></div>
+        <div class="floating-orb" style="width:350px;height:350px;top:-100px;right:-80px;animation-duration:14s;"></div>
+        <div class="floating-orb" style="width:220px;height:220px;bottom:-60px;left:-50px;animation-duration:18s;animation-delay:2s;"></div>
+        <div class="floating-orb" style="width:150px;height:150px;top:40%;left:60%;animation-duration:20s;animation-delay:4s;"></div>
         <div class="club-hero-content">
-            <div class="club-hero-avatar" id="clubEmoji">🚀</div>
+            <div class="club-hero-avatar" id="clubAvatar"></div>
             <div class="club-hero-text">
-                <h1 id="clubName">Loading...</h1>
+                <h1 class="club-hero-title" id="clubName">Loading...</h1>
+                <p class="club-hero-tagline" id="clubTagline"></p>
                 <p class="club-hero-description" id="clubDescription"></p>
                 <div class="club-hero-stats">
-                    <div class="stat-chip"><span class="stat-chip-icon">👥</span> <span id="memberStat">0 members</span></div>
-                    <div class="stat-chip"><span class="stat-chip-icon">📅</span> <span id="eventStat">0 events</span></div>
+                    <div class="hero-stat-chip">
+                        <span class="hero-stat-value" id="heroMembers">0</span>
+                        <span class="hero-stat-label">Members</span>
+                    </div>
+                    <div class="hero-stat-chip">
+                        <span class="hero-stat-value" id="heroEvents">0</span>
+                        <span class="hero-stat-label">Events</span>
+                    </div>
+                    <div class="hero-stat-chip">
+                        <span class="hero-stat-value" id="heroAchievements">0</span>
+                        <span class="hero-stat-label">Achievements</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Tab Navigation -->
-    <div class="tab-navigation">
-        <div class="tab-navigation-inner">
-            <button class="tab-btn active" data-tab="members" id="tab-members">
-                <span class="tab-btn-icon">👥</span> Members
-            </button>
-            <button class="tab-btn" data-tab="events" id="tab-events">
-                <span class="tab-btn-icon">📅</span> Events
-            </button>
+    <!-- About Section -->
+    <section class="club-section" id="about">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">About <span class="gradient-text" id="aboutClubName"></span></h2>
+                <p class="section-subtitle">Learn more about our mission and what we do</p>
+            </div>
+            <div class="about-grid" id="aboutContent"></div>
         </div>
-    </div>
+    </section>
 
-    <!-- Tab Content -->
-    <div class="tab-content">
-        <div class="tab-panel active" id="pane-members">
-            <div class="tab-panel-loading">
-                <div class="clubs-loading-spinner"></div>
-                <p>Loading members...</p>
+    <!-- Events Section -->
+    <section class="club-section club-section-alt" id="events">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Previous Events</h2>
+                <p class="section-subtitle">A look at our past events and activities</p>
+            </div>
+            <div class="events-timeline" id="eventsContent">
+                <div class="section-loading"><div class="clubs-loading-spinner"></div><p>Loading events...</p></div>
             </div>
         </div>
-        <div class="tab-panel" id="pane-events">
-            <div class="tab-panel-loading">
-                <div class="clubs-loading-spinner"></div>
-                <p>Loading events...</p>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="club-section" id="achievements">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Achievements</h2>
+                <p class="section-subtitle">Our proudest moments and accomplishments</p>
+            </div>
+            <div class="achievements-grid" id="achievementsContent">
+                <div class="section-loading"><div class="clubs-loading-spinner"></div><p>Loading achievements...</p></div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Members Section -->
+    <section class="club-section club-section-alt" id="members">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Our Team</h2>
+                <p class="section-subtitle">Meet the amazing people behind the club</p>
+            </div>
+            <div id="membersContent">
+                <div class="section-loading"><div class="clubs-loading-spinner"></div><p>Loading members...</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Section -->
+    <section class="club-section" id="faculty">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Faculty Coordinators</h2>
+                <p class="section-subtitle">Guided by experienced mentors</p>
+            </div>
+            <div class="faculty-grid" id="facultyContent">
+                <div class="section-loading"><div class="clubs-loading-spinner"></div><p>Loading faculty...</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="club-section club-section-alt" id="contact">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-subtitle">Get in touch with us</p>
+            </div>
+            <div class="contact-grid" id="contactContent"></div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="clubs-footer">
-        <p>© 2026 ClubConnect — Student Club Management System</p>
+        <p>&copy; 2026 ClubConnect — Student Club Management System</p>
     </footer>
 
     <script>

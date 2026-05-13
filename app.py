@@ -20,11 +20,11 @@ TABLE_MAP = {
     'AWS Cloud Club': 'awscloudclub_members'
 }
 
-CLUB_EMOJIS = {
-    'Genesis': '🚀',
-    'Numerano': '🔢',
-    'ByteSync': '💻',
-    'AWS Cloud Club': '☁️'
+CLUB_LOGOS = {
+    'Genesis': '/static/images/clubs/genesis.png',
+    'Numerano': '/static/images/clubs/numerano.jpeg',
+    'ByteSync': '/static/images/clubs/bytesync.jpeg',
+    'AWS Cloud Club': '/static/images/clubs/aws-cloud-club.png'
 }
 
 # ────────────────────────── Page Routes ──────────────────────────
@@ -214,9 +214,9 @@ def api_clubs():
     try:
         cur.execute('SELECT club_id, club_name, member_count FROM clubs ORDER BY club_id')
         clubs = cur.fetchall()
-        # Add emojis for frontend
+        # Add logos for frontend
         for c in clubs:
-            c['emoji'] = CLUB_EMOJIS.get(c['club_name'], '🏢')
+            c['logo'] = CLUB_LOGOS.get(c['club_name'], '')
         return jsonify({'success': True, 'clubs': clubs})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
@@ -262,6 +262,42 @@ def api_events():
             if e.get('created_at'):
                 e['created_at'] = e['created_at'].isoformat()
         return jsonify({'success': True, 'events': events})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/api/club/<club_name>/achievements', methods=['GET'])
+def api_club_achievements(club_name):
+    db = get_db()
+    cur = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    try:
+        cur.execute('SELECT * FROM achievements WHERE club_name = %s ORDER BY achievement_date DESC', (club_name,))
+        achievements = cur.fetchall()
+        for a in achievements:
+            if a.get('achievement_date'):
+                a['achievement_date'] = a['achievement_date'].isoformat()
+            if a.get('created_at'):
+                a['created_at'] = a['created_at'].isoformat()
+        return jsonify({'success': True, 'achievements': achievements})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/api/club/<club_name>/faculty', methods=['GET'])
+def api_club_faculty(club_name):
+    db = get_db()
+    cur = db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    try:
+        cur.execute('SELECT * FROM faculty_coordinators WHERE club_name = %s ORDER BY coordinator_name', (club_name,))
+        faculty = cur.fetchall()
+        for f in faculty:
+            if f.get('created_at'):
+                f['created_at'] = f['created_at'].isoformat()
+        return jsonify({'success': True, 'faculty': faculty})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
     finally:
@@ -357,6 +393,39 @@ def api_admin_remove_member():
         cur.close()
 
 
+@app.route('/api/admin/member/update-team', methods=['POST'])
+def api_admin_update_member_team():
+    """Update a member's team type within the same club."""
+    if not session.get('admin_authenticated'):
+        return jsonify({'success': False, 'message': 'Not authorized.'}), 403
+
+    data = request.get_json()
+    member_id = data.get('member_id')
+    club_name = data.get('club_name', '').strip()
+    new_team_type = data.get('new_team_type', '').strip()
+
+    if not member_id or not club_name or not new_team_type:
+        return jsonify({'success': False, 'message': 'Member ID, club name, and new team type are required.'}), 400
+
+    if club_name not in TABLE_MAP:
+        return jsonify({'success': False, 'message': 'Invalid club name.'}), 400
+
+    table = TABLE_MAP[club_name]
+    db = get_db()
+    cur = db.cursor()
+    try:
+        cur.execute(f"UPDATE {table} SET team_type = %s WHERE member_id = %s", (new_team_type, member_id))
+        if cur.rowcount == 0:
+            return jsonify({'success': False, 'message': 'Member not found.'}), 404
+        db.commit()
+        return jsonify({'success': True, 'message': f'Team updated to {new_team_type}.'})
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        cur.close()
+
+
 @app.route('/api/admin/event/add', methods=['POST'])
 def api_admin_add_event():
     if not session.get('admin_authenticated'):
@@ -380,6 +449,145 @@ def api_admin_add_event():
         )
         db.commit()
         return jsonify({'success': True, 'message': 'Event added!'})
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/api/admin/event/remove', methods=['POST'])
+def api_admin_remove_event():
+    if not session.get('admin_authenticated'):
+        return jsonify({'success': False, 'message': 'Not authorized.'}), 403
+
+    data = request.get_json()
+    event_id = data.get('event_id')
+
+    if not event_id:
+        return jsonify({'success': False, 'message': 'Event ID is required.'}), 400
+
+    db = get_db()
+    cur = db.cursor()
+    try:
+        cur.execute("DELETE FROM events WHERE event_id = %s", (event_id,))
+        if cur.rowcount == 0:
+            return jsonify({'success': False, 'message': 'Event not found.'}), 404
+        db.commit()
+        return jsonify({'success': True, 'message': 'Event removed.'})
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/api/admin/achievement/add', methods=['POST'])
+def api_admin_add_achievement():
+    if not session.get('admin_authenticated'):
+        return jsonify({'success': False, 'message': 'Not authorized.'}), 403
+
+    data = request.get_json()
+    title = data.get('title', '').strip()
+    description = data.get('description', '').strip()
+    achievement_date = data.get('achievement_date')
+    club_name = data.get('club_name', '').strip()
+
+    if not title or not club_name:
+        return jsonify({'success': False, 'message': 'Title and club name are required.'}), 400
+
+    db = get_db()
+    cur = db.cursor()
+    try:
+        cur.execute(
+            "INSERT INTO achievements (title, description, achievement_date, club_name) VALUES (%s, %s, %s, %s)",
+            (title, description or None, achievement_date or None, club_name)
+        )
+        db.commit()
+        return jsonify({'success': True, 'message': 'Achievement added!'})
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/api/admin/achievement/remove', methods=['POST'])
+def api_admin_remove_achievement():
+    if not session.get('admin_authenticated'):
+        return jsonify({'success': False, 'message': 'Not authorized.'}), 403
+
+    data = request.get_json()
+    achievement_id = data.get('achievement_id')
+
+    if not achievement_id:
+        return jsonify({'success': False, 'message': 'Achievement ID is required.'}), 400
+
+    db = get_db()
+    cur = db.cursor()
+    try:
+        cur.execute("DELETE FROM achievements WHERE achievement_id = %s", (achievement_id,))
+        if cur.rowcount == 0:
+            return jsonify({'success': False, 'message': 'Achievement not found.'}), 404
+        db.commit()
+        return jsonify({'success': True, 'message': 'Achievement removed.'})
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/api/admin/faculty/add', methods=['POST'])
+def api_admin_add_faculty():
+    if not session.get('admin_authenticated'):
+        return jsonify({'success': False, 'message': 'Not authorized.'}), 403
+
+    data = request.get_json()
+    coordinator_name = data.get('coordinator_name', '').strip()
+    designation = data.get('designation', '').strip()
+    email = data.get('email', '').strip()
+    phone = data.get('phone', '').strip()
+    club_name = data.get('club_name', '').strip()
+
+    if not coordinator_name or not club_name:
+        return jsonify({'success': False, 'message': 'Coordinator name and club name are required.'}), 400
+
+    db = get_db()
+    cur = db.cursor()
+    try:
+        cur.execute(
+            "INSERT INTO faculty_coordinators (coordinator_name, designation, email, phone, club_name) VALUES (%s, %s, %s, %s, %s)",
+            (coordinator_name, designation or None, email or None, phone or None, club_name)
+        )
+        db.commit()
+        return jsonify({'success': True, 'message': 'Faculty coordinator added!'})
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        cur.close()
+
+
+@app.route('/api/admin/faculty/remove', methods=['POST'])
+def api_admin_remove_faculty():
+    if not session.get('admin_authenticated'):
+        return jsonify({'success': False, 'message': 'Not authorized.'}), 403
+
+    data = request.get_json()
+    coordinator_id = data.get('coordinator_id')
+
+    if not coordinator_id:
+        return jsonify({'success': False, 'message': 'Coordinator ID is required.'}), 400
+
+    db = get_db()
+    cur = db.cursor()
+    try:
+        cur.execute("DELETE FROM faculty_coordinators WHERE coordinator_id = %s", (coordinator_id,))
+        if cur.rowcount == 0:
+            return jsonify({'success': False, 'message': 'Faculty coordinator not found.'}), 404
+        db.commit()
+        return jsonify({'success': True, 'message': 'Faculty coordinator removed.'})
     except Exception as e:
         db.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500

@@ -53,7 +53,8 @@ def drop_all_tables(conn):
     cur.execute("""
         DROP TABLE IF EXISTS submissions, admins, achievements, announcements,
         events, members, subclubs, users, clubs,
-        genesis_members, numerano_members, bytesync_members, awscloudclub_members
+        genesis_members, numerano_members, bytesync_members, awscloudclub_members,
+        faculty_coordinators
         CASCADE;
     """)
     # Drop old trigger function if exists
@@ -163,6 +164,31 @@ def init_db():
                 event_type   VARCHAR(50) NOT NULL,
                 club_name    VARCHAR(100) NOT NULL,
                 created_at   TIMESTAMP DEFAULT NOW()
+            )
+        ''')
+
+        # Table 9: achievements
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS achievements (
+                achievement_id  SERIAL PRIMARY KEY,
+                title           VARCHAR(200) NOT NULL,
+                description     TEXT,
+                achievement_date DATE,
+                club_name       VARCHAR(100) NOT NULL,
+                created_at      TIMESTAMP DEFAULT NOW()
+            )
+        ''')
+
+        # Table 10: faculty_coordinators
+        cur.execute('''
+            CREATE TABLE IF NOT EXISTS faculty_coordinators (
+                coordinator_id   SERIAL PRIMARY KEY,
+                coordinator_name VARCHAR(150) NOT NULL,
+                designation      VARCHAR(100),
+                email            VARCHAR(150),
+                phone            VARCHAR(15),
+                club_name        VARCHAR(100) NOT NULL,
+                created_at       TIMESTAMP DEFAULT NOW()
             )
         ''')
 
@@ -305,6 +331,32 @@ def seed_data(cur, conn):
             ('Open Source Contribution Drive', '2025-04-18', 'Technical', 'ByteSync'),
             ('Cloud Quest Challenge',          '2025-03-05', 'Technical', 'AWS Cloud Club'),
             ('AWS Re:Invent Watch Party',      '2025-04-22', 'Cultural',  'AWS Cloud Club')
+    """)
+
+    # ── Achievements ──
+    cur.execute("""
+        INSERT INTO achievements (title, description, achievement_date, club_name) VALUES
+            ('1st Place — National Hackathon',       'Won first place at HackIndia 2025 among 500+ teams.',           '2025-03-20', 'Genesis'),
+            ('Best Design Award — TechFest',         'Recognized for outstanding UI/UX design at college TechFest.',  '2025-04-12', 'Genesis'),
+            ('State-level Math Olympiad Winners',    'Team secured gold in the Maharashtra State Math Olympiad.',     '2025-02-25', 'Numerano'),
+            ('Published Research Paper',             'Published a paper on applied statistics in IEEE conference.',    '2025-04-01', 'Numerano'),
+            ('Open Source Contribution — 500+ PRs',  'Club members contributed 500+ pull requests to open source.',   '2025-04-20', 'ByteSync'),
+            ('Hackathon Runner-Up — CodeStorm',      'Secured 2nd place at CodeStorm inter-college hackathon.',       '2025-03-12', 'ByteSync'),
+            ('AWS Community Builder Recognition',    'Three members recognized as AWS Community Builders.',           '2025-03-10', 'AWS Cloud Club'),
+            ('Cloud Architecture Challenge Winner',  'Won the regional AWS Cloud Architecture Challenge 2025.',       '2025-04-25', 'AWS Cloud Club')
+    """)
+
+    # ── Faculty Coordinators ──
+    cur.execute("""
+        INSERT INTO faculty_coordinators (coordinator_name, designation, email, phone, club_name) VALUES
+            ('Dr. Anita Deshmukh',  'Associate Professor, CS',    'anita.deshmukh@college.edu',  '9876500001', 'Genesis'),
+            ('Prof. Rajesh Kumar',  'Assistant Professor, IT',    'rajesh.kumar@college.edu',    '9876500002', 'Genesis'),
+            ('Dr. Suman Patil',     'HOD, Mathematics',           'suman.patil@college.edu',     '9876500003', 'Numerano'),
+            ('Prof. Meena Sharma',  'Assistant Professor, Stats', 'meena.sharma@college.edu',    '9876500004', 'Numerano'),
+            ('Dr. Vikram Joshi',    'Associate Professor, CS',    'vikram.joshi@college.edu',    '9876500005', 'ByteSync'),
+            ('Prof. Neha Gupta',    'Assistant Professor, CS',    'neha.gupta@college.edu',      '9876500006', 'ByteSync'),
+            ('Dr. Pradeep Nair',    'Professor, Cloud Computing', 'pradeep.nair@college.edu',    '9876500007', 'AWS Cloud Club'),
+            ('Prof. Kavita Rao',    'Assistant Professor, IT',    'kavita.rao@college.edu',      '9876500008', 'AWS Cloud Club')
     """)
 
     conn.commit()
